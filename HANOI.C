@@ -172,7 +172,7 @@ VOID DestroyHelpInstance(VOID);
  *           1 - if error
  *
 \****************************************************************/
-INT main(LONG argc, CHAR *argv[])
+int main (int argc, CHAR *argv[])
 {
    QMSG     qmsg;                      /* Message structure */
    ULONG    flCtlData;                 /* Frame control data */
@@ -220,7 +220,7 @@ INT main(LONG argc, CHAR *argv[])
    hwndMainFrame = WinCreateStdWindow(HWND_DESKTOP,
                                       WS_VISIBLE,
                                       &flCtlData,
-                                      szAppName,
+                                      (PCSZ) szAppName,
                                       NULL,
                                       WS_VISIBLE,
                                       (HMODULE)NULL,
@@ -275,11 +275,11 @@ INT main(LONG argc, CHAR *argv[])
 BOOL Init(VOID)
 {
     /* load application name from resource file */
-    if(!WinLoadString(hab, 0L, IDS_APPNAME, MAXNAMEL, szAppName))
+    if(!WinLoadString(hab, 0L, IDS_APPNAME, MAXNAMEL, (PSZ) szAppName))
         return FALSE;
 
     /* load "untitled" string */
-    if(!WinLoadString(hab, 0L, IDS_UNTITLED, MESSAGELEN, szUntitled))
+    if(!WinLoadString(hab, 0L, IDS_UNTITLED, MESSAGELEN, (PSZ) szUntitled))
         return FALSE;
 
     /* register the main client window class */
@@ -388,7 +388,7 @@ MRESULT EXPENTRY MainWndProc(HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2)
          EnableMenuItem(hwnd,IDM_STOP,FALSE);  /* Disable stop          */
                                                /* Print msg             */
          sprintf(szMsg,"%lu disks were moved.",ulIterations);  
-         WinMessageBox(HWND_DESKTOP, hwnd, szMsg, "Done!", 0L,
+         WinMessageBox(HWND_DESKTOP, hwnd, (PCSZ) szMsg, (PCSZ) "Done!", 0L,
                        MB_OK | MB_MOVEABLE | MB_INFORMATION);
          SetupTowers();                        /* Reset towers          */
          WinInvalidateRect(hwnd,NULL,FALSE);   /* Force a screen redraw */
@@ -452,7 +452,7 @@ VOID MainPaint(HWND hwnd)
    {
       memset(szBuffer, 0L, sizeof(szBuffer));
       strcpy(szBuffer,pszDisk);
-      GpiCharStringAt(hps, &ptl, strlen(szBuffer), szBuffer);
+      GpiCharStringAt(hps, &ptl, strlen(szBuffer), (PCCH) szBuffer);
    }
    /*
     *center the base in the middle
@@ -869,10 +869,10 @@ VOID Hanoi(BYTE bHeight, BYTE bFrom, BYTE bTo, BYTE bTemp)
                          &rect,
                          (ULONG)CHS_OPAQUE,
                          DELETE_WIDTH,
-                         szBuffer,
+                         (PCCH) szBuffer,
                          &lIncrement);
 
-      GpiCharStringAt(hps, &ptl, strlen(szBuffer), szBuffer);
+      GpiCharStringAt(hps, &ptl, strlen(szBuffer), (PCCH) szBuffer);
       strcpy(szBuffer,pszDisksMoved);
       /*
        *display the number of disks moved
@@ -881,12 +881,12 @@ VOID Hanoi(BYTE bHeight, BYTE bFrom, BYTE bTo, BYTE bTemp)
        *left hand side of text to draw
        */
       ptl.x = usCenter - (( (strlen(pszDisksMoved) + MAX_DIGITS)/ 2)* FontMetrics.lAveCharWidth);
-      GpiCharStringAt(hps, &ptl, strlen(szBuffer), szBuffer);
+      GpiCharStringAt(hps, &ptl, strlen(szBuffer), (PCCH) szBuffer);
       sprintf(szBuffer,"%05lu",
                        ulIterations+ 1 );
 
       ptl.x = usCenter + ( ((strlen(pszDisksMoved ) /2) + 1) * FontMetrics.lAveCharWidth);
-      GpiCharStringAt(hps, &ptl, strlen(szBuffer), szBuffer);
+      GpiCharStringAt(hps, &ptl, strlen(szBuffer), (PCCH) szBuffer);
    }
    WinReleasePS(hps);
    ulIterations++;
@@ -948,7 +948,7 @@ VOID MoveDisk(HPS hps, BYTE bFrom, BYTE bTo)
                         /* bFrom - The from spindle number, 0-2 */
                         /* bTo - The to spindle number, 0-2 */
 {
-   CHAR bTOSndx;                        /* Top of stack index */
+   int bTOSndx;                         /* Top of stack index */
    BYTE bDiskNum;                       /* Disk number to move */
 
    bTOSndx = abTowersNdx[bFrom]-(CHAR) 1;
@@ -1162,7 +1162,7 @@ LONG MessageBox(HWND hwndOwner, LONG IdMsg, LONG fsStyle, BOOL fBeep)
 
     sRC = WinMessageBox(HWND_DESKTOP,
                         hwndOwner,
-                        szText,
+                        (PCSZ) szText,
                         (PSZ)NULL,
                         IDD_MSGBOX,
                         fsStyle);
@@ -1600,7 +1600,7 @@ VOID BackgroundThread(ULONG ulThreadParam)
          }
          /* Create the object window */
          hwndObject = WinCreateWindow(HWND_OBJECT,
-                                      szObjectClass,
+                                      (PCSZ) szObjectClass,
                                       NULL,
                                       0L,
                                       0,

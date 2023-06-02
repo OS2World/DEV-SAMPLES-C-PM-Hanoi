@@ -164,5 +164,4 @@ number and copyright notice.
 :h1 res=2984 name=PANEL_HELPOFF.Information
 :i2 refid=HELP.VIEWOFF Information
 :p.This menu item will disable the information area.
-
 :euserdoc.

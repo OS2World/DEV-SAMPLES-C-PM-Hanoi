@@ -18,7 +18,7 @@ hanoi.res : hanoi.rc  hanoi.ico
 	wrc -r hanoi.rc
 
 hanoi.hlp: hanoi.ipf
-	wipfc hanoi.ipf
+	wipfc -l en_US hanoi.ipf
 
 clean :
 	rm -rf *exe *res *obj *hlp

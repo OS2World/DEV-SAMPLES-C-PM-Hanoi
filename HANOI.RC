@@ -7,7 +7,7 @@
 #include "hanoi.h"
 
 ICON ID_RESOURCE   hanoi.ico
-BITMAP IDR_BITMAP "..\\prodinfo.bmp"
+BITMAP IDR_BITMAP "prodinfo.bmp"
 
 MENU ID_RESOURCE
 {
